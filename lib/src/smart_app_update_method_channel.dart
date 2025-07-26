@@ -4,7 +4,7 @@ import 'package:smart_app_update/src/smart_app_update_platform_interface.dart';
 class MethodChannelSmartAppUpdate extends SmartAppUpdatePlatform
     implements UpdateFlutterApi {
   late final UpdateHostApi _hostApi;
-  Function(ProgressInfo)? _onProgress;
+  Function(SmartAppUpdateProgressInfo)? _onProgress;
 
   MethodChannelSmartAppUpdate() {
     _hostApi = UpdateHostApi();
@@ -32,13 +32,13 @@ class MethodChannelSmartAppUpdate extends SmartAppUpdatePlatform
   }
 
   @override
-  void setProgressCallback(Function(ProgressInfo) onProgress) {
+  void setProgressCallback(Function(SmartAppUpdateProgressInfo) onProgress) {
     _onProgress = onProgress;
   }
 
   // UpdateFlutterApi implementation (callbacks from native)
   @override
-  void onUpdateProgress(ProgressInfo progress) {
+  void onUpdateProgress(SmartAppUpdateProgressInfo progress) {
     _onProgress?.call(progress);
   }
 }

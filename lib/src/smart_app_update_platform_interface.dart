@@ -37,7 +37,7 @@ abstract class SmartAppUpdatePlatform extends PlatformInterface {
   }
 
   // Callback setters
-  void setProgressCallback(Function(ProgressInfo) onProgress) {
+  void setProgressCallback(Function(SmartAppUpdateProgressInfo) onProgress) {
     throw UnimplementedError('setProgressCallback() has not been implemented.');
   }
 }

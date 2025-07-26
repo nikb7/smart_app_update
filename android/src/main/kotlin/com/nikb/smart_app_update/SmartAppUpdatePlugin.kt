@@ -144,10 +144,10 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
             when (state.installStatus()) {
                 InstallStatus.DOWNLOADING -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
+                        SmartAppUpdateProgressInfo(
                             bytesDownloaded = state.bytesDownloaded(),
                             totalBytes = state.totalBytesToDownload(),
-                            status = UpdateStatus.DOWNLOADING
+                            status = SmartAppUpdateStatus.DOWNLOADING
                         )
                     ) {}
                 }
@@ -156,50 +156,50 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
                     val totalBytes = state.totalBytesToDownload()
                     // Notify Flutter that download is complete and user can trigger install
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
+                        SmartAppUpdateProgressInfo(
                             bytesDownloaded = totalBytes,
                             totalBytes = totalBytes,
-                            status = UpdateStatus.DOWNLOADED
+                            status = SmartAppUpdateStatus.DOWNLOADED
                         )
                     ) {}
                 }
 
                 InstallStatus.INSTALLING -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
-                            status = UpdateStatus.DOWNLOADED
+                        SmartAppUpdateProgressInfo(
+                            status = SmartAppUpdateStatus.DOWNLOADED
                         )
                     ) {}
                 }
 
                 InstallStatus.PENDING -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
-                            status = UpdateStatus.CHECKING
+                        SmartAppUpdateProgressInfo(
+                            status = SmartAppUpdateStatus.CHECKING
                         )
                     ) {}
                 }
 
                 InstallStatus.INSTALLED -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
-                            status = UpdateStatus.INSTALLED
+                        SmartAppUpdateProgressInfo(
+                            status = SmartAppUpdateStatus.INSTALLED
                         )
                     ) {}
                     unregisterFlexibleUpdateListener()
                 }
                 InstallStatus.CANCELED -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
-                            status = UpdateStatus.CANCELED
+                        SmartAppUpdateProgressInfo(
+                            status = SmartAppUpdateStatus.CANCELED
                         )
                     ) {}
                     unregisterFlexibleUpdateListener()
                 }
                 else -> {
                     flutterApi?.onUpdateProgress(
-                        ProgressInfo(
-                            status = UpdateStatus.FAILED
+                        SmartAppUpdateProgressInfo(
+                            status = SmartAppUpdateStatus.FAILED
                         )
                     ) {}
                     unregisterFlexibleUpdateListener()
@@ -262,8 +262,8 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
                     Activity.RESULT_OK -> {
                         // Successfully installed
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.INSTALLED
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.INSTALLED
                             )
                         ) {}
                     }
@@ -271,8 +271,8 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
                     Activity.RESULT_CANCELED -> {
                         // User canceled the update
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.CANCELED
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.CANCELED
                             )
                         ) {}
                     }
@@ -280,8 +280,8 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
                     ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
                         // Update failed or was canceled by Play Store
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.FAILED
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.FAILED
                             )
                         ) {}
                     }
@@ -296,16 +296,16 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
                         // The actual download/install is handled by the listener.
                         // You might not need to do much here, or just log it.
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.DOWNLOADING
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.DOWNLOADING
                             )
                         ) {}
                     }
 
                     Activity.RESULT_CANCELED -> {
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.CANCELED
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.CANCELED
                             )
                         ) {}
                         unregisterFlexibleUpdateListener() // User declined, stop listening for this attempt
@@ -313,8 +313,8 @@ class SmartAppUpdatePlugin : FlutterPlugin, UpdateHostApi, ActivityAware, Activi
 
                     ActivityResult.RESULT_IN_APP_UPDATE_FAILED -> {
                         flutterApi?.onUpdateProgress(
-                            ProgressInfo(
-                                status = UpdateStatus.FAILED
+                            SmartAppUpdateProgressInfo(
+                                status = SmartAppUpdateStatus.FAILED
                             )
                         ) {}
                         unregisterFlexibleUpdateListener()

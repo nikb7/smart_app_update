@@ -15,7 +15,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   final _smartAppUpdatePlugin = SmartAppUpdate(
     iOSAppStoreCountry: 'IN',
-    iOSId: 'com.example.app', // Replace with your iOS app ID
+    iOSId: '', // Replace with your iOS app ID
     iOSAppLinkUrl:
         'https://apps.apple.com/in/app/<app-name>/<app-id>', // Replace with your iOS app link
   );
@@ -23,7 +23,15 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    _smartAppUpdatePlugin.updateIfAvailable(contextBuilder: () => context);
+    _smartAppUpdatePlugin.updateIfAvailable(
+      contextBuilder: () => context,
+      androidProgressCallback: (progressInfo) {
+        // Handle UI updates on Android for progress updates
+
+        // This step is only required for android flexible updates.
+        _smartAppUpdatePlugin.handleUpdateProgress(progressInfo: progressInfo);
+      },
+    );
   }
 
   @override

@@ -45,3 +45,41 @@ The iOS implementation redirects users to the App Store for updates. It does not
 - `openAppStore()` - Opens the App Store page for the app
 - `showUpdateDialog()` - Displays a default update dialog with options to update or cancel
 - `showUpdateDialogBuilder()` - Allows customization of the update dialog
+
+## Configuration
+
+### Android
+Ensure your Android app is distributed through Google Play Store for in-app updates to work.
+
+### iOS
+Provide a valid App Store URL when initializing the plugin.
+
+
+## Inspiration and Acknowledgments
+
+This plugin was inspired by and built upon the concepts from several excellent Flutter packages:
+
+- **[in_app_update](https://pub.dev/packages/in_app_update)** - A great Flutter plugin for Android in-app updates. Our plugin builds on similar concepts but provides enhanced status tracking and a more comprehensive API surface.
+
+- **[new_version_plus](https://pub.dev/packages/new_version_plus)** - An excellent package for checking app versions across platforms. We drew inspiration from their cross-platform approach and version checking mechanisms.
+
+We acknowledge the valuable work done by the maintainers of these packages and the Flutter community for providing foundational concepts that helped shape this plugin.
+
+## Differences from Similar Packages
+
+While inspired by existing solutions, `smart_app_update` offers:
+
+- **Enhanced Status Tracking**: Detailed progress information with comprehensive status enums
+- **Unified API**: Consistent interface across platforms with platform-specific optimizations
+- **Better Error Handling**: Custom exception types with detailed error information
+- **Modern Architecture**: Built with Pigeon for type-safe platform communication
+- **Comprehensive Documentation**: Detailed examples and usage patterns
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit issues and pull requests.
+
+## License
+
+This project is licensed under the terms specified in the LICENSE file.
+

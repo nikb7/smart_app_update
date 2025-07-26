@@ -8,8 +8,8 @@ import 'package:pigeon/pigeon.dart';
   ),
 )
 // Data Models
-class ProgressInfo {
-  const ProgressInfo({
+class SmartAppUpdateProgressInfo {
+  const SmartAppUpdateProgressInfo({
     this.bytesDownloaded,
     this.totalBytes,
     required this.status,
@@ -17,10 +17,10 @@ class ProgressInfo {
 
   final int? bytesDownloaded;
   final int? totalBytes;
-  final UpdateStatus status;
+  final SmartAppUpdateStatus status;
 }
 
-enum UpdateStatus {
+enum SmartAppUpdateStatus {
   checking,
   downloading,
   downloaded,
@@ -49,5 +49,5 @@ abstract class UpdateHostApi {
 // Flutter API (native calls Flutter)
 @FlutterApi()
 abstract class UpdateFlutterApi {
-  void onUpdateProgress(ProgressInfo progress);
+  void onUpdateProgress(SmartAppUpdateProgressInfo progress);
 }

@@ -14,7 +14,7 @@ class MockSmartAppUpdatePlatform
   }
 
   @override
-  void setProgressCallback(Function(ProgressInfo p1) onProgress) {
+  void setProgressCallback(Function(SmartAppUpdateProgressInfo p1) onProgress) {
     // TODO: implement setProgressCallback
   }
 

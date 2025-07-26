@@ -80,7 +80,7 @@ class FlutterError (
   val details: Any? = null
 ) : Throwable()
 
-enum class UpdateStatus(val raw: Int) {
+enum class SmartAppUpdateStatus(val raw: Int) {
   CHECKING(0),
   DOWNLOADING(1),
   DOWNLOADED(2),
@@ -90,25 +90,25 @@ enum class UpdateStatus(val raw: Int) {
   CANCELED(6);
 
   companion object {
-    fun ofRaw(raw: Int): UpdateStatus? {
+    fun ofRaw(raw: Int): SmartAppUpdateStatus? {
       return values().firstOrNull { it.raw == raw }
     }
   }
 }
 
 /** Generated class from Pigeon that represents data sent in messages. */
-data class ProgressInfo (
+data class SmartAppUpdateProgressInfo (
   val bytesDownloaded: Long? = null,
   val totalBytes: Long? = null,
-  val status: UpdateStatus
+  val status: SmartAppUpdateStatus
 )
  {
   companion object {
-    fun fromList(pigeonVar_list: List<Any?>): ProgressInfo {
+    fun fromList(pigeonVar_list: List<Any?>): SmartAppUpdateProgressInfo {
       val bytesDownloaded = pigeonVar_list[0] as Long?
       val totalBytes = pigeonVar_list[1] as Long?
-      val status = pigeonVar_list[2] as UpdateStatus
-      return ProgressInfo(bytesDownloaded, totalBytes, status)
+      val status = pigeonVar_list[2] as SmartAppUpdateStatus
+      return SmartAppUpdateProgressInfo(bytesDownloaded, totalBytes, status)
     }
   }
   fun toList(): List<Any?> {
@@ -119,7 +119,7 @@ data class ProgressInfo (
     )
   }
   override fun equals(other: Any?): Boolean {
-    if (other !is ProgressInfo) {
+    if (other !is SmartAppUpdateProgressInfo) {
       return false
     }
     if (this === other) {
@@ -134,12 +134,12 @@ private open class MessagesPigeonCodec : StandardMessageCodec() {
     return when (type) {
       129.toByte() -> {
         return (readValue(buffer) as Long?)?.let {
-          UpdateStatus.ofRaw(it.toInt())
+          SmartAppUpdateStatus.ofRaw(it.toInt())
         }
       }
       130.toByte() -> {
         return (readValue(buffer) as? List<Any?>)?.let {
-          ProgressInfo.fromList(it)
+          SmartAppUpdateProgressInfo.fromList(it)
         }
       }
       else -> super.readValueOfType(type, buffer)
@@ -147,11 +147,11 @@ private open class MessagesPigeonCodec : StandardMessageCodec() {
   }
   override fun writeValue(stream: ByteArrayOutputStream, value: Any?)   {
     when (value) {
-      is UpdateStatus -> {
+      is SmartAppUpdateStatus -> {
         stream.write(129)
         writeValue(stream, value.raw)
       }
-      is ProgressInfo -> {
+      is SmartAppUpdateProgressInfo -> {
         stream.write(130)
         writeValue(stream, value.toList())
       }
@@ -260,7 +260,7 @@ class UpdateFlutterApi(private val binaryMessenger: BinaryMessenger, private val
       MessagesPigeonCodec()
     }
   }
-  fun onUpdateProgress(progressArg: ProgressInfo, callback: (Result<Unit>) -> Unit)
+  fun onUpdateProgress(progressArg: SmartAppUpdateProgressInfo, callback: (Result<Unit>) -> Unit)
 {
     val separatedMessageChannelSuffix = if (messageChannelSuffix.isNotEmpty()) ".$messageChannelSuffix" else ""
     val channelName = "dev.flutter.pigeon.smart_app_update.UpdateFlutterApi.onUpdateProgress$separatedMessageChannelSuffix"

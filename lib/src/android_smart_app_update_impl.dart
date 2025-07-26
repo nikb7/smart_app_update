@@ -54,7 +54,7 @@ class AndroidSmartAppUpdate {
   }
 
   /// Sets a callback to receive update progress notifications.
-  void onProgressUpdated(Function(ProgressInfo) callback) {
+  void onProgressUpdated(Function(SmartAppUpdateProgressInfo) callback) {
     SmartAppUpdatePlatform.instance.setProgressCallback(callback);
   }
 }

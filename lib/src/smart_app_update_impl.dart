@@ -47,7 +47,7 @@ class SmartAppUpdate {
     bool isFlexibleUpdateAndroid = true,
     Widget Function()? iOSUpdateDialogBuilder,
     BuildContext? Function()? contextBuilder,
-    bool Function()? onAndroidUpdatedDownloaded,
+    void Function(SmartAppUpdateProgressInfo)? androidProgressCallback,
   }) async {
     final updateInfo = await getUpdateInfo();
 
@@ -55,18 +55,11 @@ class SmartAppUpdate {
       if (Platform.isAndroid) {
         if (isFlexibleUpdateAndroid) {
           if (await AndroidSmartAppUpdate.instance.startImmediateUpdate()) {
-            if (onAndroidUpdatedDownloaded != null) {
-              final allowInstall = onAndroidUpdatedDownloaded();
-              if (allowInstall) {
-                return await AndroidSmartAppUpdate.instance
-                    .completeFlexibleUpdate();
-              } else {
-                return false; // User chose not to install the update
-              }
+            if (androidProgressCallback != null) {
+              AndroidSmartAppUpdate.instance.onProgressUpdated(
+                androidProgressCallback,
+              );
             }
-
-            return await AndroidSmartAppUpdate.instance
-                .completeFlexibleUpdate();
           }
         } else {
           return await AndroidSmartAppUpdate.instance.startImmediateUpdate();
@@ -119,5 +112,14 @@ class SmartAppUpdate {
     }
 
     return true; // No-op for iOS
+  }
+
+  Future<void> handleUpdateProgress({
+    required SmartAppUpdateProgressInfo progressInfo,
+  }) async {
+    if (Platform.isAndroid &&
+        progressInfo.status == SmartAppUpdateStatus.downloaded) {
+      await AndroidSmartAppUpdate.instance.completeFlexibleUpdate();
+    }
   }
 }

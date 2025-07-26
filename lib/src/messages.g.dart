@@ -39,7 +39,7 @@ bool _deepEquals(Object? a, Object? b) {
 }
 
 
-enum UpdateStatus {
+enum SmartAppUpdateStatus {
   checking,
   downloading,
   downloaded,
@@ -49,8 +49,8 @@ enum UpdateStatus {
   canceled,
 }
 
-class ProgressInfo {
-  ProgressInfo({
+class SmartAppUpdateProgressInfo {
+  SmartAppUpdateProgressInfo({
     this.bytesDownloaded,
     this.totalBytes,
     required this.status,
@@ -60,7 +60,7 @@ class ProgressInfo {
 
   int? totalBytes;
 
-  UpdateStatus status;
+  SmartAppUpdateStatus status;
 
   List<Object?> _toList() {
     return <Object?>[
@@ -73,19 +73,19 @@ class ProgressInfo {
   Object encode() {
     return _toList();  }
 
-  static ProgressInfo decode(Object result) {
+  static SmartAppUpdateProgressInfo decode(Object result) {
     result as List<Object?>;
-    return ProgressInfo(
+    return SmartAppUpdateProgressInfo(
       bytesDownloaded: result[0] as int?,
       totalBytes: result[1] as int?,
-      status: result[2]! as UpdateStatus,
+      status: result[2]! as SmartAppUpdateStatus,
     );
   }
 
   @override
   // ignore: avoid_equals_and_hash_code_on_mutable_classes
   bool operator ==(Object other) {
-    if (other is! ProgressInfo || other.runtimeType != runtimeType) {
+    if (other is! SmartAppUpdateProgressInfo || other.runtimeType != runtimeType) {
       return false;
     }
     if (identical(this, other)) {
@@ -108,10 +108,10 @@ class _PigeonCodec extends StandardMessageCodec {
     if (value is int) {
       buffer.putUint8(4);
       buffer.putInt64(value);
-    }    else if (value is UpdateStatus) {
+    }    else if (value is SmartAppUpdateStatus) {
       buffer.putUint8(129);
       writeValue(buffer, value.index);
-    }    else if (value is ProgressInfo) {
+    }    else if (value is SmartAppUpdateProgressInfo) {
       buffer.putUint8(130);
       writeValue(buffer, value.encode());
     } else {
@@ -124,9 +124,9 @@ class _PigeonCodec extends StandardMessageCodec {
     switch (type) {
       case 129: 
         final int? value = readValue(buffer) as int?;
-        return value == null ? null : UpdateStatus.values[value];
+        return value == null ? null : SmartAppUpdateStatus.values[value];
       case 130: 
-        return ProgressInfo.decode(readValue(buffer)!);
+        return SmartAppUpdateProgressInfo.decode(readValue(buffer)!);
       default:
         return super.readValueOfType(type, buffer);
     }
@@ -262,7 +262,7 @@ class UpdateHostApi {
 abstract class UpdateFlutterApi {
   static const MessageCodec<Object?> pigeonChannelCodec = _PigeonCodec();
 
-  void onUpdateProgress(ProgressInfo progress);
+  void onUpdateProgress(SmartAppUpdateProgressInfo progress);
 
   static void setUp(UpdateFlutterApi? api, {BinaryMessenger? binaryMessenger, String messageChannelSuffix = '',}) {
     messageChannelSuffix = messageChannelSuffix.isNotEmpty ? '.$messageChannelSuffix' : '';
@@ -277,9 +277,9 @@ abstract class UpdateFlutterApi {
           assert(message != null,
           'Argument for dev.flutter.pigeon.smart_app_update.UpdateFlutterApi.onUpdateProgress was null.');
           final List<Object?> args = (message as List<Object?>?)!;
-          final ProgressInfo? arg_progress = (args[0] as ProgressInfo?);
+          final SmartAppUpdateProgressInfo? arg_progress = (args[0] as SmartAppUpdateProgressInfo?);
           assert(arg_progress != null,
-              'Argument for dev.flutter.pigeon.smart_app_update.UpdateFlutterApi.onUpdateProgress was null, expected non-null ProgressInfo.');
+              'Argument for dev.flutter.pigeon.smart_app_update.UpdateFlutterApi.onUpdateProgress was null, expected non-null SmartAppUpdateProgressInfo.');
           try {
             api.onUpdateProgress(arg_progress!);
             return wrapResponse(empty: true);
